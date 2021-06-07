@@ -1,9 +1,9 @@
 let mongoose = require("mongoose");
-let LocationRegistration = require('../models/locationRegistration.js');
+let LocationRegistration = require('../src/models/locationRegistration.js');
 
 let chai = require('chai');
 let chaiHttp = require('chai-http');
-let server = require('../server.js'); // our server.js
+let server = require('../src/index.js'); // our server.js
 let should = chai.should();
 
 chai.use(chaiHttp);

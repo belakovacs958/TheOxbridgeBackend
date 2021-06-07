@@ -1,5 +1,5 @@
 module.exports = (app) => {
-    const events = require('../controllers/event.controller.js');
+    const events = require('../controllers/event.controller');
 
     // Create an new event
     app.post('/events', events.create); 
