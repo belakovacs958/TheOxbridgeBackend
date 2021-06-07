@@ -1,5 +1,5 @@
 module.exports = (app) => {
-    const ships = require('../controllers/ship.controller.js');
+    const ships = require('../controllers/ship.controller');
 
     // Create a new ship
     app.post('/ships', ships.create); 

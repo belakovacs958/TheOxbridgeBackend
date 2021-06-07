@@ -1,5 +1,5 @@
 module.exports = (app) => {
-    const racePoint = require('../controllers/racePoint.controller.js');
+    const racePoint = require('../controllers/racePoint.controller');
 
     // Retrieve start and finish racepoints from an specific event
     app.get('/racePoints/findStartAndFinish/:eventId', racePoint.findStartAndFinish); 

@@ -1,5 +1,5 @@
 module.exports = (app) => {
-    const locationRegistrations = require('../controllers/locationRegistration.controller.js');
+    const locationRegistrations = require('../controllers/locationRegistration.controller');
 
     // Create a new LocationRegistration
     app.post('/locationRegistrations/', locationRegistrations.create); 

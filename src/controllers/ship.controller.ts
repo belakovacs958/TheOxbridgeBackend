@@ -1,6 +1,6 @@
-const Ship = require('../models/ship.js');
-const EventRegistrations = require('../models/eventRegistration.js');
-const Auth = require('./authentication.controller.js');
+const Ship = require('../models/ship');
+const EventRegistrations = require('../models/eventRegistration');
+const Auth = require('./authentication.controller');
 
 // Create and Save a new ship
 exports.create = (req, res) => {

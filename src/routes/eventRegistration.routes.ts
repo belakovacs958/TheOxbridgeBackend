@@ -1,5 +1,5 @@
 module.exports = (app) => {
-    const eventRegistrations = require('../controllers/eventRegistration.controller.js');
+    const eventRegistrations = require('../controllers/eventRegistration.controller');
 
     // Create a new EventRegistration
     app.post('/eventRegistrations/', eventRegistrations.create); 
