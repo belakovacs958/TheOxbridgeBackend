@@ -1,0 +1,58 @@
+var Auth = require('./authentication.controller.js');
+var RacePoint = require('../models/racePoint.js');
+//Create new racepoints
+exports.createRoute = function (req, res) {
+    // Checking if authorized 
+    Auth.Authorize(req, res, "admin", function (err) {
+        if (err)
+            return err;
+        //Deleting all previous racePoints
+        RacePoint.deleteMany({ eventId: req.params.eventId }, function (err) {
+            if (err)
+                return res.status(500).send({ message: err.message || "failed to delete route" });
+            else {
+                var racePoints = req.body;
+                if (Array.isArray(racePoints)) {
+                    RacePoint.findOne({}).sort('-racePointId').exec(function (err, lastRacePoint) {
+                        var racepointId;
+                        if (err)
+                            return res.status(500).send({ message: err.message || "Some error occurred while retriving bikeRacks" });
+                        if (lastRacePoint)
+                            racepointId = lastRacePoint.racePointId;
+                        else
+                            racepointId = 1;
+                        racePoints.forEach(function (racePoint) {
+                            var racepoint = new RacePoint(racePoint);
+                            racepointId = racepointId + 1;
+                            racepoint.racePointId = racepointId;
+                            // Saving the new racepoint in the DB
+                            racepoint.save(function (err) {
+                                if (err)
+                                    return res.send(err);
+                            });
+                        });
+                    });
+                    res.status(201).json(racePoints);
+                }
+                else
+                    return res.status(400).send();
+            }
+        });
+    });
+};
+//Retrieves all racepoints from an given event
+exports.findAllEventRacePoints = function (req, res) {
+    RacePoint.find({ eventId: req.params.eventId }, { _id: 0, __v: 0 }, { sort: { racePointNumber: 1 } }, function (err, racePoints) {
+        if (err)
+            return res.status(500).send({ message: err.message || "Some error occurred while retriving racepoints" });
+        return res.status(200).send(racePoints);
+    });
+};
+//Retrieves start and finish racepoints from an given event
+exports.findStartAndFinish = function (req, res) {
+    RacePoint.find({ eventId: req.params.eventId, $or: [{ type: 'startLine' }, { type: 'finishLine' }] }, { _id: 0, __v: 0 }, function (err, racePoints) {
+        if (err)
+            return res.status(500).send({ message: err.message || "Some error occurred while retriving racepoints" });
+        res.status(200).json(racePoints);
+    });
+};
