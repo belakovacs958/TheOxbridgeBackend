@@ -6,6 +6,7 @@ const RacePoint = require('../models/racePoint');
 
 // Create and Save a new Event
 exports.create = (req, res) => {
+    console.log("creating an event!!!!!!!!!!!!")
 
     //Checking if authorized 
     Auth.Authorize(req, res, "admin", function (err) {
@@ -13,6 +14,7 @@ exports.create = (req, res) => {
             return err;
 
         var event = new Event(req.body);
+        console.log(req.body)
 
         // Finding next eventId
         Event.findOne({}).sort('-eventId').exec(function (err, lastEvent) {
@@ -25,9 +27,15 @@ exports.create = (req, res) => {
 
             // Saving the new Event in the DB
             event.save(function (err) {
-                if (err)
+                if (err){
+                    console.log(err)
                     return res.send(err);
-                res.status(201).json(event);
+                }
+                else   {
+                    console.log("successful event creation")
+                    res.status(201).json(event);
+                }
+                
             });
         });
     });
