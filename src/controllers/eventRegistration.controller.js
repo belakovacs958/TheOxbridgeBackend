@@ -3,6 +3,7 @@ const Ship = require('../models/ship');
 const Event = require('../models/event');
 const User = require('../models/user');
 const Auth = require('./authentication.controller');
+const Email = require('./email.controller');
 
 var bcrypt = require('bcryptjs');
 
@@ -26,25 +27,36 @@ exports.create = (req, res) => {
 };
 
 // Checks that all foreignkeys are valid. Creates and save a new EventRegistration. Returns response
-exports.createRegistration = (newRegistration, res, callback) => {
+function createRegistration (newRegistration, res) {
 
     validateForeignKeys(newRegistration, res, function (err) {
-        if (err)
-            return callback(err);
-
+        if (err){
+            console.log(err);
+            return err;
+        }
         // Finding next eventRegId
         EventRegistration.findOne({}).sort('-eventRegId').exec(function (err, lastEventRegistration) {
-            if (err)
-                return callback(res.status(500).send({ message: err.message || "Some error occurred while retriving eventRegistrations" }));
-            if (lastEventRegistration)
+            if (err){
+                console.log(err + '2');
+                return err;//callback(res.status(500).send({ message: err.message || "Some error occurred while retriving eventRegistrations" }));
+
+            }
+            if (lastEventRegistration){
+                console.log(err + '3');
                 newRegistration.eventRegId = lastEventRegistration.eventRegId + 1;
-            else
+            }
+            else{
+                console.log(err + '4');
                 newRegistration.eventRegId = 1;
+            }
 
             newRegistration.save(function (err) {
-                if (err)
-                    return callback(res.send(err));
-                return callback(null, newRegistration);
+                if (err){
+                    console.log(err + '5');
+                    return err;
+                }
+                return newRegistration;
+            
             });
         });
     })
@@ -192,8 +204,13 @@ exports.getParticipants = (req, res) => {
 
 //Creating an eventRegistration
 exports.addParticipant = (req, res) => {
-
+    
+    //Email.sendConfirmation();
     //Checking if authorized 
+    //Email.sendConfirmation();
+    console.log("request body")
+    console.log(req.body);
+    Email.sendConfirmation(req.body);
     Auth.Authorize(req, res, "admin", function (err) {
         if (err)
             return err;

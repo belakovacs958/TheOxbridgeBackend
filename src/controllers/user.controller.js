@@ -1,5 +1,6 @@
 const User = require('../models/user');
 const Auth = require('../controllers/authentication.controller');
+const Email = require('./email.controller');
 
 var jwt = require('jsonwebtoken');
 var bcrypt = require('bcryptjs');
@@ -125,6 +126,7 @@ exports.registerAdmin = (req, res) => {
 // Register a new user and return token
 exports.register = (req, res) => {
 
+    Email.sendConfirmation();
     // Checking that no user with that username exists
     User.findOne({ emailUsername: req.body.emailUsername }, function (err, user) {
         if (err)
@@ -135,6 +137,7 @@ exports.register = (req, res) => {
 
         // Creating the user
         var hashedPassword = bcrypt.hashSync(req.body.password, 10);
+        console.log(req.body);
         var user = new User(req.body);
         user.password = hashedPassword;
         user.role = "user";

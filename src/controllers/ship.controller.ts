@@ -23,8 +23,10 @@ exports.create = (req, res) => {
 
             // Saving the new ship in the DB
             ship.save(function (err) {
-                if (err)
+                if (err){
+                    console.log(err)
                     return res.send(err);
+                }
                 res.status(201).json(ship);
             });
         });
