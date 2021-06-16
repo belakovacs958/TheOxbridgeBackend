@@ -4,8 +4,8 @@ var Schema = mongoose.Schema;
 var EventSchema = new Schema({
     eventId: Number,
     name: String,
-    eventStart: String,
-    eventEnd: String,
+    eventStart: Date,
+    eventEnd: Date,
     city: String,
     eventCode: String,
     actualEventStart : Date,

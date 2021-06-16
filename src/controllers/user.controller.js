@@ -126,7 +126,7 @@ exports.registerAdmin = (req, res) => {
 // Register a new user and return token
 exports.register = (req, res) => {
 
-    Email.sendConfirmation();
+    
     // Checking that no user with that username exists
     User.findOne({ emailUsername: req.body.emailUsername }, function (err, user) {
         if (err)
