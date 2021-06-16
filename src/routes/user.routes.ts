@@ -10,6 +10,9 @@ module.exports = (app) => {
     // Update a User with the given emailUsername
     app.put('/users/:userName', users.update); 
 
+    //reset password
+    app.put('/emails/:userName', users.resetPassword);
+    
     // Delete a User with the given emailUsername
     app.delete('/users/:userName', users.delete); 
 
@@ -21,4 +24,6 @@ module.exports = (app) => {
 
     // Login
     app.post('/users/login', users.login); 
+
+    
 }
