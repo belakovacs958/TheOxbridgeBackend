@@ -5,7 +5,7 @@ const Email = require('./email.controller');
 var jwt = require('jsonwebtoken');
 var bcrypt = require('bcryptjs');
 var config = require('../config/config');
-
+var generator = require("generate-password");
 
 // Retrieve and return all users from the database.
 exports.findAll = (req, res) => {
@@ -171,3 +171,35 @@ exports.login = (req, res) => {
         res.status(200).send({ emailUsername: user.emailUsername, firstname : user.firstname, lastname : user.lastname, auth: true, token: token });
     });
 };
+
+exports.resetPassword = (req, res) =>{
+    console.log("reset password is getting called")
+
+   
+        console.log(req.body);
+
+        var newPassword = generator.generate({
+            length : 10,
+            numbers: true
+        });
+        var hashedPassword = bcrypt.hashSync(newPassword, 10);
+        var newUser = new User(req.body);
+        newUser.password = newPassword;
+        
+        console.log(newPassword);
+        
+
+    User.findOneAndUpdate({ emailUsername: newUser.emailUsername }, {password: hashedPassword} , function (err, user) {
+        if (err)
+        console.log(err);
+            //res.send(err);
+        if (!user)
+            
+            return //res.status(404).send({ message: "User not found with id " + req.params.emailUsername });
+        
+        //console.log(user);
+        //res.status(202).json(user);
+        Email.sendPasswordReset(newUser);
+    });
+ 
+}
