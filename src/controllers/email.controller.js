@@ -67,5 +67,32 @@ async function findEvent (eventId , callback) {
 };
 
 
-module.exports = {sendConfirmation};
+function sendPasswordReset(emailDetails) {
+
+  mailOptions.to = emailDetails.emailUsername;
+  mailOptions.subject = "Password Reset";
+  mailOptions.html = emailDetails.password;
+  let transporter = nodemailer.createTransport(smtpTransport({
+    service: 'gmail',
+    host: 'smtp.gmail.com', 
+    auth: {        
+         user: 'tregattaeasvd19@gmail.com',        
+         pass: '123abc?.'    
+    }
+}));
+
+
+transporter.sendMail(mailOptions, function(error, info){
+  if (error) {
+    console.log(error);  
+  } else {     
+    console.log('Email sent: ' + info.response);  
+  }   
+
+   })
+
+}
+
+
+module.exports = {sendConfirmation, sendPasswordReset};
      
