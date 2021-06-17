@@ -1,4 +1,4 @@
-const Event = require("../models/event")
+var Event = require("../models/event");
 var async = require("async");
 //require
 var express = require("express"), 
@@ -9,7 +9,7 @@ const nodemailer = require('nodemailer');
 var mailOptions = {
   from: "tregattaeasvd19@gmail.com",
   to: "",                   // from req.body.to
-  subject: "Confirmation",         //from req.body.subject
+  subject: "Confirmation from Tre gatta",         //from req.body.subject
   html: ""      //from req.body.message
 };
 
@@ -30,26 +30,23 @@ var mailOptions = {
 
   
  function sendMail(event){
-   mailOptions.html = event.name;
+   mailOptions.html = "Event name: "  + event.name + " Event date: " + event.eventStart + " Location: " + event.city;
   transporter.sendMail(mailOptions, function(error, info){
     if (error) {
-      console.log(error);  
+      console.log(error);
+      return error  
     } else {     
-      console.log('Email sent: ' + info.response);  
+      console.log(info); 
+      return info.accepted
     }   
   
      })
  }
 
  
-
-
-   
 //options
 
 //delivery
-
-
 
 };
 async function findEvent (eventId , callback) {
