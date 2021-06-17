@@ -205,11 +205,7 @@ exports.getParticipants = (req, res) => {
 //Creating an eventRegistration
 exports.addParticipant = (req, res) => {
     
-    //Email.sendConfirmation();
-    //Checking if authorized 
-    //Email.sendConfirmation();
-    console.log("request body")
-    console.log(req.body);
+    
     Email.sendConfirmation(req.body);
     Auth.Authorize(req, res, "admin", function (err) {
         if (err)
